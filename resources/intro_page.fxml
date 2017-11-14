@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.*?>
+
+
+<GridPane>
+	<padding><Insets top="50" left="100" right="100" bottom="50"/></padding>
+	
+	<Text GridPane.columnIndex="0" GridPane.rowIndex="0">
+		Welcome to the Time Management Suite!!!
+	</Text>
+</GridPane>
+

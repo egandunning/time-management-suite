@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+
+<AnchorPane fx:controller="controllers.IntroController" xmlns:fx="http://javafx.com/fxml/1">
+	<TabPane fx:id="tabPane">
+	
+		<Tab fx:id="introTab" text="Welcome"></Tab>
+	
+	</TabPane>
+</AnchorPane>
+
