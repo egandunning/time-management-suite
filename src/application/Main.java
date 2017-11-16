@@ -16,7 +16,7 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("/main_window.fxml"));
 			primaryStage.setScene(new Scene(root, 800, 600));
 			primaryStage.setTitle("Time management suite");
-			primaryStage.getIcons().add(new Image("icon.png"));
+			primaryStage.getIcons().add(new Image("time-ms-icon.png"));
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
