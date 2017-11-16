@@ -5,11 +5,23 @@
 <?import javafx.scene.text.*?>
 
 
-<GridPane>
+<GridPane minWidth="10000">
 	<padding><Insets top="50" left="100" right="100" bottom="50"/></padding>
 	
-	<Text GridPane.columnIndex="0" GridPane.rowIndex="0">
-		Welcome to the Time Management Suite!!!
-	</Text>
+	<TextFlow GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="600">
+		<padding><Insets top="5" bottom="5"/></padding>
+		<Text>
+		Welcome to the Time Management Suite!!! This program is meant to help you get
+		stuff done and stay focused, using proven time management techniques.
+		</Text>
+	</TextFlow>
+	<TextFlow GridPane.columnIndex="0" GridPane.rowIndex="2" maxWidth="600">
+		<padding><Insets top="5" bottom="5"/></padding>
+		<Text>
+		Do you want to see your favorite time management strategy in this program?
+		Either contribute to the project or submit an issue on
+		github.com/egandunning/time-management-suite
+		</Text>
+	</TextFlow>
 </GridPane>
 
