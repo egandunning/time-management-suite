@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 
 
-<GridPane fx:controller="controllers.MainController" minWidth="10000">
+<GridPane minWidth="10000">
 	<padding><Insets top="50" left="100" right="100" bottom="50"/></padding>
 	
 	<TextFlow GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="600">

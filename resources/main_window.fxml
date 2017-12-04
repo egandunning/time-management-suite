@@ -5,12 +5,18 @@
 <?import javafx.scene.control.Tab?>
 
 <AnchorPane
-		
+		fx:controller="controllers.MainController"
 		xmlns:fx="http://javafx.com/fxml/1">
 	<TabPane fx:id="tabPane">
 	
-		<Tab fx:id="introTab" text="Welcome"></Tab>
-	
+		<Tab fx:id="introTab" text="Welcome">
+		  <fx:include source="intro_page.fxml"/>
+		</Tab>
+		
+		<Tab fx:id="gtdTab" text="GTD">
+		  <fx:include source="gtd.fxml"/>
+		</Tab>
+		
 	</TabPane>
 </AnchorPane>
 

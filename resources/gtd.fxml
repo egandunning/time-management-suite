@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml/1" minWidth="10000">
+  <ToolBar minWidth="10000">
+    <items>
+      <Region styleClass="spacer" />
+      <HBox styleClass="segmented-button-bar">
+        <Button fx:id="gtdNewIdea" text="New Idea" />
+        <Button text="Test Button" />
+        <TextFlow>
+          <padding><Insets top="5" bottom="5" right="5" left="5"/></padding>
+          <Text>GTD (Getting Things Done)</Text>
+        </TextFlow>
+      </HBox>
+    </items>
+  </ToolBar>
+
+
+</GridPane>
+
