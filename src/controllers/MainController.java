@@ -1,7 +1,5 @@
 package controllers;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -22,6 +20,8 @@ public class MainController {
 	@FXML
 	protected void initialize() {
 		System.out.println("in initialize");
+		
+		
 	}
 
 }
