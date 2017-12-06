@@ -5,15 +5,18 @@
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml/1" minWidth="10000">
+<GridPane fx:controller="controllers.GTDController" xmlns:fx="http://javafx.com/fxml/1"
+  minWidth="10000">
   <ToolBar minWidth="10000">
     <items>
       <Region styleClass="spacer" />
       <HBox styleClass="segmented-button-bar">
-        <Button fx:id="gtdNewIdea" text="New Idea" />
+        <Button fx:id="newIdea" onAction="#newIdeaAction" text="New Idea" />
         <Button text="Test Button" />
         <TextFlow>
-          <padding><Insets top="5" bottom="5" right="5" left="5"/></padding>
+          <padding>
+            <Insets top="5" bottom="5" right="5" left="5" />
+          </padding>
           <Text>GTD (Getting Things Done)</Text>
         </TextFlow>
       </HBox>
