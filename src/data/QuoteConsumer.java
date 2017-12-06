@@ -1,4 +1,4 @@
-package web;
+package data;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import model.Quote;
+import models.Quote;
 
 /**
  * Class to consume the quote of the day public API provided by

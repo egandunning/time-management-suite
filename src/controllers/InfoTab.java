@@ -1,11 +1,11 @@
 package controllers;
 
+import data.QuoteConsumer;
 import javafx.fxml.FXML;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
-import model.Quote;
-import web.QuoteConsumer;
+import models.Quote;
 
 public class InfoTab {
 
