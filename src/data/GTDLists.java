@@ -24,6 +24,7 @@ public class GTDLists {
 		lists.add("in");
 		lists.add("next actions");
 		lists.add("waiting for");
+		lists.add("projects");
 		lists.add("some day/maybe");
 	}
 

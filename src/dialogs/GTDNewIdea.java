@@ -1,49 +1,78 @@
 package dialogs;
 
+import java.util.Optional;
+
 import data.GTDLists;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 
-public class GTDNewIdea extends Alert {
+public class GTDNewIdea {
 
 	private String idea;
-	private String list;
+	private String listType;
+	private ComboBox<String> list;
 	
+	private IdeaDialog dialog;
+	private TextField ideaField;
+
 	public GTDNewIdea() {
-		super(Alert.AlertType.NONE);
-		setTitle("Record New Idea");
-		GridPane gp = new GridPane();
-		gp.setHgap(10);
-		gp.setVgap(10);
 		
-		ComboBox<String> list = new ComboBox<>(
-				FXCollections.observableList(
-						GTDLists.getInstance().getLists()));
+		list = new ComboBox<>(FXCollections.
+				observableList(GTDLists.getInstance().getLists()));
 		
-		//add elements to layout
-		gp.add(new Label("Pick a list to add to:"), 0, 0);
-		gp.add(list, 1, 0);
+		ideaField = new TextField();
 		
-		gp.add(new Label("The idea:"), 0, 1);
-		gp.add(new TextField(), 1, 1);
-		
-		//add event listeners
-		getDialogPane().getScene().getWindow()
-			.setOnCloseRequest(event -> hide());
-		
-		//add layout to pane
-		getDialogPane().setContent(gp);
+		dialog = new IdeaDialog();
 	}
-
-	public String getIdea() {
-		return idea;
+	
+	/**
+	 * Show dialog and return the idea text and list type.
+	 * @return a Pair of strings containing the idea and the list
+	 * to put the idea in, or null if the user presses cancel.
+	 */
+	public Pair<String, String> getIdeaAndList() {
+		Optional<ButtonType> choice = dialog.showAndWait();
+		idea = ideaField.getText();
+		listType = list.getValue();
+		if(choice.isPresent() && idea != null && listType != null) {
+			return new Pair<String, String>(idea, listType);
+		}
+		return null;
 	}
+	
+	/**
+	 * Dialog to get the users idea and which list to put it in.
+	 * @author Egan Dunning
+	 *
+	 */
+	private class IdeaDialog extends Alert {
+		public IdeaDialog() {
+			super(Alert.AlertType.NONE);
+			setTitle("Record New Idea");
 
-	public String getList() {
-		return list;
+			// set up layout
+			GridPane gp = new GridPane();
+			gp.setHgap(10);
+			gp.setVgap(10);
+
+			//controls
+			getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
+
+			// add elements to layout
+			gp.add(new Label("Pick a list to add to:"), 0, 0);
+			gp.add(list, 1, 0);
+
+			gp.add(new Label("The idea:"), 0, 1);
+			gp.add(ideaField, 1, 1);
+			
+			// add layout to pane
+			getDialogPane().setContent(gp);
+		}
 	}
 }

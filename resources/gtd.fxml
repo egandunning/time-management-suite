@@ -5,24 +5,70 @@
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 
-<GridPane fx:controller="controllers.GTDController" xmlns:fx="http://javafx.com/fxml/1"
-  minWidth="10000">
-  <ToolBar minWidth="10000">
-    <items>
-      <Region styleClass="spacer" />
-      <HBox styleClass="segmented-button-bar">
-        <Button fx:id="newIdea" onAction="#newIdeaAction" text="New Idea" />
-        <Button text="Test Button" />
-        <TextFlow>
-          <padding>
-            <Insets top="5" bottom="5" right="5" left="5" />
-          </padding>
-          <Text>GTD (Getting Things Done)</Text>
-        </TextFlow>
-      </HBox>
-    </items>
-  </ToolBar>
+<ScrollPane fx:controller="controllers.GTDController"
+  xmlns:fx="http://javafx.com/fxml/1" minWidth="10">
+  <GridPane>
+    <ToolBar minWidth="10000" GridPane.columnSpan="5"
+      GridPane.rowIndex="0">
+      <items>
+        <Region styleClass="spacer" />
+        <HBox styleClass="segmented-button-bar">
+          <Button fx:id="newIdea" onAction="#newIdeaAction" text="New Idea" />
+          <Button text="Test Button" />
+          <TextFlow>
+            <padding>
+              <Insets top="5" bottom="5" right="5" left="5" />
+            </padding>
+            <Text>GTD (Getting Things Done)</Text>
+          </TextFlow>
+        </HBox>
+      </items>
+    </ToolBar>
+    <VBox fx:id="inList" GridPane.columnIndex="0"
+      GridPane.rowIndex="1" minWidth="150" minHeight="1000"
+      style="-fx-border-color: gray; -fx-border-width: 1">
+      <padding>
+        <Insets top="5" bottom="5" right="5" left="5" />
+      </padding>
+      <Text>In</Text>
+    </VBox>
 
+    <VBox fx:id="nextActionsList" GridPane.columnIndex="1"
+      GridPane.rowIndex="1" minWidth="150" minHeight="1000"
+      style="-fx-border-color: gray; -fx-border-width: 1">
+      <padding>
+        <Insets top="5" bottom="5" right="5" left="5" />
+      </padding>
+      <Text>Next Actions</Text>
+    </VBox>
 
-</GridPane>
+    <VBox fx:id="waitingForList" GridPane.columnIndex="2"
+      GridPane.rowIndex="1" minWidth="150" minHeight="1000"
+      style="-fx-border-color: gray; -fx-border-width: 1">
+      <padding>
+        <Insets top="5" bottom="5" right="5" left="5" />
+      </padding>
+      <Text>Waiting For</Text>
+    </VBox>
+
+    <VBox fx:id="projectsList" GridPane.columnIndex="3"
+      GridPane.rowIndex="1" minWidth="150" minHeight="1000"
+      style="-fx-border-color: gray; -fx-border-width: 1">
+      <padding>
+        <Insets top="5" bottom="5" right="5" left="5" />
+      </padding>
+      <Text>Projects</Text>
+    </VBox>
+
+    <VBox fx:id="somedayList" GridPane.columnIndex="4"
+      GridPane.rowIndex="1" minWidth="150" minHeight="1000"
+      style="-fx-border-color: gray; -fx-border-width: 1">
+      <padding>
+        <Insets top="5" bottom="5" right="5" left="5" />
+      </padding>
+      <Text>Some Day</Text>
+    </VBox>
+  </GridPane>
+
+</ScrollPane>
 
