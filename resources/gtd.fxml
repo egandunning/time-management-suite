@@ -14,7 +14,6 @@
         <Region styleClass="spacer" />
         <HBox styleClass="segmented-button-bar">
           <Button fx:id="newIdea" onAction="#newIdeaAction" text="New Idea" />
-          <Button text="Test Button" />
           <TextFlow>
             <padding>
               <Insets top="5" bottom="5" right="5" left="5" />
@@ -30,7 +29,7 @@
       <padding>
         <Insets top="5" bottom="5" right="5" left="5" />
       </padding>
-      <Text>In</Text>
+      <Text style="-fx-font-weight: bold">In</Text>
     </VBox>
 
     <VBox fx:id="nextActionsList" GridPane.columnIndex="1"
@@ -39,7 +38,7 @@
       <padding>
         <Insets top="5" bottom="5" right="5" left="5" />
       </padding>
-      <Text>Next Actions</Text>
+      <Text style="-fx-font-weight: bold">Next Actions</Text>
     </VBox>
 
     <VBox fx:id="waitingForList" GridPane.columnIndex="2"
@@ -48,7 +47,7 @@
       <padding>
         <Insets top="5" bottom="5" right="5" left="5" />
       </padding>
-      <Text>Waiting For</Text>
+      <Text style="-fx-font-weight: bold">Waiting For</Text>
     </VBox>
 
     <VBox fx:id="projectsList" GridPane.columnIndex="3"
@@ -57,7 +56,7 @@
       <padding>
         <Insets top="5" bottom="5" right="5" left="5" />
       </padding>
-      <Text>Projects</Text>
+      <Text style="-fx-font-weight: bold">Projects</Text>
     </VBox>
 
     <VBox fx:id="somedayList" GridPane.columnIndex="4"
@@ -66,7 +65,7 @@
       <padding>
         <Insets top="5" bottom="5" right="5" left="5" />
       </padding>
-      <Text>Some Day</Text>
+      <Text style="-fx-font-weight: bold">Some Day</Text>
     </VBox>
   </GridPane>
 
