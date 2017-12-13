@@ -1,9 +1,16 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import data.persistence.Serializer;
 import dialogs.GTDNewIdea;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -24,8 +31,9 @@ public class GTDController {
 	@FXML
 	private Button newIdea;
 	@FXML
+	private ArrayList<Pair<String,VBox>> lists;
+	@FXML
 	private VBox inList;
-	Text inListDrop;
 	@FXML
 	private VBox nextActionsList;
 	@FXML
@@ -40,21 +48,68 @@ public class GTDController {
 		System.out.println("In initialize (GTD)");
 		
 		//drag and drop listeners
-		inList.setOnDragOver(new DragOverHandler<DragEvent>());
-		inList.setOnDragDropped(new DragDroppedHandler<DragEvent>(inList));
 		
-		nextActionsList.setOnDragOver(new DragOverHandler<DragEvent>());
-		nextActionsList.setOnDragDropped(new DragDroppedHandler<DragEvent>(nextActionsList));
+		lists = new ArrayList<>();
+		lists.addAll(Arrays.asList(
+				new Pair<>("inList", inList),
+				new Pair<>("nextActionsList", nextActionsList),
+				new Pair<>("waitingForList", waitingForList),
+				new Pair<>("projectsList", projectsList),
+				new Pair<>("somedayList", somedayList)));
 		
-		waitingForList.setOnDragOver(new DragOverHandler<DragEvent>());
-		waitingForList.setOnDragDropped(new DragDroppedHandler<DragEvent>(waitingForList));
-		
-		projectsList.setOnDragOver(new DragOverHandler<DragEvent>());
-		projectsList.setOnDragDropped(new DragDroppedHandler<DragEvent>(projectsList));
-		
-		somedayList.setOnDragOver(new DragOverHandler<DragEvent>());
-		somedayList.setOnDragDropped(new DragDroppedHandler<DragEvent>(somedayList));
+		//iterate through vbox layouts and add event listeners and persisted
+		//ui elements
+		for(Pair<String, VBox> list : lists) {
+			
+			//populate vboxes
+			ObservableList<Node> storedLists = Serializer.getInstance()
+					.readNodeList(list.getKey());
+			
+			if(storedLists != null) {
+
+				//remove header text element
+				storedLists.remove(0);
+				
+				//add stored list items to layouts
+				list.getValue().getChildren().addAll(storedLists);
+				for(Node node : list.getValue().getChildren()) {
+					node.setOnDragDetected(new DragHandler<MouseEvent>((Text)node));
+					node.setOnDragDone(new DragDoneHandler<MouseEvent>((Text)node));
+				}
+			}
+			
+			//drag and drop event listeners
+			list.getValue().setOnDragOver(new DragOverHandler<DragEvent>());
+			list.getValue().setOnDragDropped(
+					new DragDroppedHandler<DragEvent>(list.getValue()));
+			
+			//list changed event listener
+			list.getValue().getChildren()
+					.addListener(new ListChangedHandler<>(list.getKey()));
+		}
 	}
+	
+	/**
+	 * Event handler for saving list to file when 
+	 */
+	private class ListChangedHandler<T extends Node> implements ListChangeListener<T> {
+
+		private String listName = "";
+		
+		public ListChangedHandler(String listName) {
+			this.listName = listName;
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public void onChanged(Change<? extends T> c) {
+			//write updated file to date
+			System.out.print(listName + " updated on disk... ");
+			System.out.println(Serializer.getInstance()
+					.writeNodeList((ObservableList<Node>) c.getList(), listName));
+		}
+	}
+	
 	/**
 	 * Class for handling drag over events - needed for multiple layouts
 	 * @param <T> the event type - should be DragEvent
@@ -73,7 +128,7 @@ public class GTDController {
 	 */
 	private class DragDroppedHandler<T extends Event> implements EventHandler<T> {
 
-		VBox layout;
+		private VBox layout;
 		
 		public DragDroppedHandler(VBox layout) {
 			this.layout = layout;
@@ -179,5 +234,4 @@ public class GTDController {
 			break;
 		}
 	}
-
 }
