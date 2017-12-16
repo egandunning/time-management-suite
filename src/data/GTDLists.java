@@ -31,5 +31,4 @@ public class GTDLists {
 	public ArrayList<String> getLists() {
 		return lists;
 	}
-	
 }

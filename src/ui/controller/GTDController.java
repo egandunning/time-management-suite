@@ -1,10 +1,9 @@
-package controllers;
+package ui.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import data.persistence.Serializer;
-import dialogs.GTDNewIdea;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -20,6 +19,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
+import ui.dialog.GTDNewIdea;
 
 /**
  * Controller for the GTD tab.

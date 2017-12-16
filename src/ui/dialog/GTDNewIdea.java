@@ -1,4 +1,4 @@
-package dialogs;
+package ui.dialog;
 
 import java.util.Optional;
 
@@ -47,9 +47,7 @@ public class GTDNewIdea {
 	}
 	
 	/**
-	 * Dialog to get the users idea and which list to put it in.
-	 * @author Egan Dunning
-	 *
+	 * Dialog to get the user's idea and which list to put it in.
 	 */
 	private class IdeaDialog extends Alert {
 		public IdeaDialog() {

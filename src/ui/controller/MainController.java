@@ -1,4 +1,4 @@
-package controllers;
+package ui.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;

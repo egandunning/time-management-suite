@@ -1,4 +1,4 @@
-package controllers;
+package ui.controller;
 
 import data.QuoteConsumer;
 import javafx.fxml.FXML;
