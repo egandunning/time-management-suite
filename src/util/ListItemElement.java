@@ -1,24 +1,38 @@
-package ui.element;
+package util;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import javafx.scene.text.Text;
 import models.GTDListItem;
+import ui.element.GTDText;
 
+/**
+ * Class to create Text elements from the GTDListItem bean.
+ * @author Egan Dunning
+ */
 public class ListItemElement {
 
-	private Text text;
-	private LocalDateTime deadline;
-	
-	public ListItemElement(GTDListItem item) {
+	public static GTDText generate(GTDListItem item) {
+		
+		if(item == null) {
+			return null;
+		}
+		
+		GTDText text;
+		LocalDateTime deadline;
 		
 		deadline = item.getDeadline();
 		
-		String timeUntilDeadline = timeUntilDeadline(deadline);
+		if(deadline != null) {
+			String timeUntilDeadline = timeUntilDeadline(deadline);
+			text = new GTDText(item.getText() + ": do it in " + timeUntilDeadline);
+		} else {
+			text = new GTDText(item.getText());
+		}
 		
-		setText(new Text(item.getText() + ": do it in " + timeUntilDeadline));
-		
+		//set field to store data about list item.
+		text.setItem(new GTDListItem(item.getText(), item.getDeadline()));
+		return text;
 	}
 
 	/**
@@ -27,7 +41,11 @@ public class ListItemElement {
 	 * @param deadline The deadline to get time until.
 	 * @return String representation of the time from now until deadline.
 	 */
-	private String timeUntilDeadline(LocalDateTime deadline) {
+	private static String timeUntilDeadline(LocalDateTime deadline) {
+		
+		if(deadline == null) {
+			return "";
+		}
 		
 		LocalDateTime now = LocalDateTime.now();
 		
@@ -49,21 +67,5 @@ public class ListItemElement {
 		} else {
 			return hours + " hour" + hourPlural;
 		}
-	}
-
-	public Text getText() {
-		return text;
-	}
-
-	public void setText(Text text) {
-		this.text = text;
-	}
-
-	public LocalDateTime getDeadline() {
-		return deadline;
-	}
-	
-	public void setDeadline(LocalDateTime deadline) {
-		this.deadline = deadline;
 	}
 }
