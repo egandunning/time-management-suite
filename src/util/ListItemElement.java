@@ -12,6 +12,11 @@ import ui.element.GTDText;
  */
 public class ListItemElement {
 
+	/**
+	 * Generate a new GTDText element from a GTDListItem.
+	 * @param item the list item.
+	 * @return the GTDText element containing data from the list item.
+	 */
 	public static GTDText generate(GTDListItem item) {
 		
 		if(item == null) {
