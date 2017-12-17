@@ -14,6 +14,8 @@ public class InfoTab {
 	@FXML
 	public Text quoteOfTheDay;
 	
+	Quote q;
+	
 	/**
 	 * Called when GUI loads. Loads FXML file and inserts into the intro tab
 	 */
@@ -22,21 +24,37 @@ public class InfoTab {
 		System.out.println("in initialize (InfoTab)");
 		
 		//get quote of the day
-		Quote q = new Quote();
+		q = new Quote();
 		quoteOfTheDay.setFont(Font.font("Times", FontPosture.ITALIC, 20));
-		try {
-			q = QuoteConsumer.getInstance().getQuoteOfTheDay();
-			//We dont want our quote to say null
-			if(q == null || q.getAuthor() == null || q.getQuote() == null) {
-				throw new NullPointerException("Quote was null!!!");
+
+		quoteOfTheDay.setText("Waiting for network...");
+		
+		//Get quote of the day asynchronously to avoid blocking GUI thread
+		Thread getQuote = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					//get quote of the day
+					q = QuoteConsumer.getInstance().getQuoteOfTheDay();
+					if(q == null || q.getAuthor() == null || q.getQuote() == null) {
+						throw new NullPointerException("Quote was null!!!");
+					}	
+					
+				} catch (Exception e) {
+					//We don't want our quote to say null
+					e.printStackTrace();
+					q = new Quote();
+					q.setQuote("\"Whoops! Error retrieving quote of the day.\"");
+					q.setAuthor("Egan");
+				}
+				//set value of quote in fxml Text tag
+				quoteOfTheDay.setText(q.getQuote() + " - " + q.getAuthor());
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			q = new Quote();
-			q.setQuote("\"Whoops! Error retrieving quote of the day.\"");
-			q.setAuthor("Egan");
-		}
-		//set value of quote in fxml Text tag
-		quoteOfTheDay.setText(q.getQuote() + " - " + q.getAuthor());
+		});
+		
+		//start thread
+		getQuote.start();
+		
 	}
 }

@@ -21,6 +21,7 @@ public class QuoteConsumer {
 	private URL url;
 	private HttpURLConnection conn;
 	
+	Quote quote;
 	
 	private QuoteConsumer() throws IOException {
 		url = new URL("http://quotes.rest/qod.json");
