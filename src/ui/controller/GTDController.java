@@ -2,24 +2,27 @@ package ui.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import data.persistence.Serializer;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.util.Pair;
+import models.GTDListItem;
 import ui.dialog.GTDNewIdea;
+import ui.element.GTDText;
+import util.ListItemElement;
 
 /**
  * Controller for the GTD tab.
@@ -43,6 +46,9 @@ public class GTDController {
 	@FXML
 	private VBox somedayList;
 	
+	//DataFormat for reading GTD list items from drag n drop clipboard
+	private static final DataFormat GTD_LIST_ITEM = new DataFormat("GTDListItem");
+	
 	@FXML
 	protected void initialize() {
 		System.out.println("In initialize (GTD)");
@@ -55,26 +61,22 @@ public class GTDController {
 				new Pair<>("nextActionsList", nextActionsList),
 				new Pair<>("waitingForList", waitingForList),
 				new Pair<>("projectsList", projectsList),
-				new Pair<>("somedayList", somedayList)));
+				new Pair<>("somedayList", somedayList) ));
 		
 		//iterate through vbox layouts and add event listeners and persisted
 		//ui elements
-		for(Pair<String, VBox> list : lists) {
+		for(Pair<String,VBox> list : lists) {
 			
-			//populate vboxes
-			ObservableList<Node> storedLists = Serializer.getInstance()
-					.readNodeList(list.getKey());
+			List<GTDText> storedLists = Serializer.getInstance()
+					.readGTDList(list.getKey());
 			
 			if(storedLists != null) {
-
-				//remove header text element
-				storedLists.remove(0);
 				
 				//add stored list items to layouts
-				list.getValue().getChildren().addAll(storedLists);
-				for(Node node : list.getValue().getChildren()) {
-					node.setOnDragDetected(new DragHandler<MouseEvent>((Text)node));
-					node.setOnDragDone(new DragDoneHandler<MouseEvent>((Text)node));
+				for(GTDText item : storedLists) {
+					list.getValue().getChildren().add(item);
+					item.setOnDragDetected(new DragHandler<MouseEvent>(item));
+					item.setOnDragDone(new DragDoneHandler<MouseEvent>(item));
 				}
 			}
 			
@@ -85,12 +87,12 @@ public class GTDController {
 			
 			//list changed event listener
 			list.getValue().getChildren()
-					.addListener(new ListChangedHandler<>(list.getKey()));
+					.addListener(new ListChangedHandler<Node>(list.getKey()));
 		}
 	}
 	
 	/**
-	 * Event handler for saving list to file when 
+	 * Event handler for saving list to file when list is updated
 	 */
 	private class ListChangedHandler<T extends Node> implements ListChangeListener<T> {
 
@@ -100,13 +102,24 @@ public class GTDController {
 			this.listName = listName;
 		}
 		
-		@SuppressWarnings("unchecked")
 		@Override
 		public void onChanged(Change<? extends T> c) {
 			//write updated file to date
 			System.out.print(listName + " updated on disk... ");
+			
+			//Create list of items to write to file
+			ArrayList<GTDText> serializableList = new ArrayList<>();
+			for(Node n : c.getList()) {
+				
+				//add node to list of list items to serialize
+				if(n instanceof GTDText) {
+					serializableList.add((GTDText)n);
+				}
+			}
+			
+			//write to file and print status
 			System.out.println(Serializer.getInstance()
-					.writeNodeList((ObservableList<Node>) c.getList(), listName));
+					.writeGTDList(serializableList, listName));
 		}
 	}
 	
@@ -136,9 +149,9 @@ public class GTDController {
 		
 		@Override
 		public void handle(Event event) {
-			layout.getChildren().add(new Text(((DragEvent)event).getDragboard().getString()));
+			layout.getChildren().add(ListItemElement.generate((GTDListItem) (((DragEvent)event).getDragboard().getContent(GTD_LIST_ITEM))));
 			
-			Text lastElement = (Text) layout.getChildren().get(layout.getChildren().size()-1);
+			GTDText lastElement = (GTDText) layout.getChildren().get(layout.getChildren().size()-1);
 			lastElement.setOnDragDetected(new DragHandler<MouseEvent>(lastElement));
 			lastElement.setOnDragDone(new DragDoneHandler<MouseEvent>(lastElement));
 			((DragEvent)event).setDropCompleted(true);
@@ -151,9 +164,9 @@ public class GTDController {
 	 */
 	private class DragHandler<T extends Event> implements EventHandler<T> {
 
-		private Text text;
+		private GTDText text;
 		
-		public DragHandler(Text text) {
+		public DragHandler(GTDText text) {
 			this.text = text;
 		}
 		
@@ -161,7 +174,7 @@ public class GTDController {
 		public void handle(Event event) {
 			Dragboard db = text.startDragAndDrop(TransferMode.MOVE);
 			ClipboardContent content = new ClipboardContent();
-			content.putString(text.getText());
+			content.put(GTD_LIST_ITEM, text.getItem());
 			db.setContent(content);
 			event.consume();
 		}
@@ -172,9 +185,9 @@ public class GTDController {
 	 */
 	private class DragDoneHandler<T extends Event> implements EventHandler<DragEvent> {
 
-		private Text text;
+		private GTDText text;
 		
-		public DragDoneHandler(Text text) {
+		public DragDoneHandler(GTDText text) {
 			this.text = text;
 		}
 		
@@ -189,15 +202,16 @@ public class GTDController {
 	protected void newIdeaAction() {
 		System.out.println("new idea clicked");
 		GTDNewIdea dialog = new GTDNewIdea();
-		Pair<String, String> ideaAndList = dialog.getIdeaAndList();		
+		Pair<GTDText, String> ideaAndList = dialog.getIdeaAndList();		
 		
-		String idea = ideaAndList.getKey();
-		String list = ideaAndList.getValue();
-		
-		if(idea == null || list == null) {
-			System.out.println("user pressed cancel");
+		//user didn't enter any values 
+		if(ideaAndList == null) {
+			return;
 		}
 		
+		GTDText idea = ideaAndList.getKey();
+		String list = ideaAndList.getValue();
+
 		addIdeaToList(idea, list);		
 	}
 	
@@ -206,31 +220,29 @@ public class GTDController {
 	 * @param idea the idea to record
 	 * @param list the list to record idea in
 	 */
-	private void addIdeaToList(String idea, String list) {
+	private void addIdeaToList(GTDText idea, String list) {
 		
 		System.out.println("idea: " + idea + " list: " + list);
 		
-		Text text = new Text(idea);
+		idea.setOnDragDetected(new DragHandler<MouseEvent>(idea));
 		
-		text.setOnDragDetected(new DragHandler<MouseEvent>(text));
-		
-		text.setOnDragDone(new DragDoneHandler<MouseEvent>(text));
+		idea.setOnDragDone(new DragDoneHandler<MouseEvent>(idea));
 		
 		switch(list) {
 		case "in":
-			inList.getChildren().add(text);
+			inList.getChildren().add(idea);
 			break;
 		case "next actions":
-			nextActionsList.getChildren().add(text);
+			nextActionsList.getChildren().add(idea);
 			break;
 		case "waiting for":
-			waitingForList.getChildren().add(text);
+			waitingForList.getChildren().add(idea);
 			break;
 		case "projects":
-			projectsList.getChildren().add(text);
+			projectsList.getChildren().add(idea);
 			break;
 		case "some day/maybe":
-			somedayList.getChildren().add(text);
+			somedayList.getChildren().add(idea);
 			break;
 		}
 	}

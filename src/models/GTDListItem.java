@@ -37,4 +37,9 @@ public class GTDListItem implements Serializable {
 		this.deadline = deadline;
 	}
 
+	@Override
+	public String toString() {
+		return "GTDListItem [text=" + text + ", deadline=" + deadline + "]";
+	}
+
 }

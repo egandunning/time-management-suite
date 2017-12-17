@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 
 
-<GridPane minWidth="10000" fx:controller="controllers.InfoTab" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane minWidth="10000" fx:controller="ui.controller.InfoTab" xmlns:fx="http://javafx.com/fxml/1">
   <padding>
     <Insets top="50" left="100" right="100" bottom="50" />
   </padding>

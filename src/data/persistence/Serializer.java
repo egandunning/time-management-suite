@@ -13,6 +13,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import models.GTDListItem;
+import ui.element.GTDText;
+import util.ListItemElement;
 
 /**
  * A class for writing objects to file and reading objects from file.
@@ -75,7 +78,9 @@ public class Serializer {
 	 * @return true if the object was written to file.
 	 */
 	public boolean write(Serializable obj, String filename, boolean overwrite) {
-					
+		
+		System.out.println("Object to write: " + obj.toString());
+		
 		File f = new File(ROOT_DIR + "\\" + filename + ".txt");
 			
 		//if overwrite flag is false and the file exists, return false
@@ -121,11 +126,57 @@ public class Serializer {
 		try(FileInputStream fin = new FileInputStream(f);
 				ObjectInputStream oin = new ObjectInputStream(fin)) {
 			
-			return (Serializable) oin.readObject();
+			Serializable temp = (Serializable) oin.readObject();
+			System.out.println("Object read: " + temp);
+			return temp;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * Write a list of GTDText objects to disk.
+	 * @param list the list of GTDText objects.
+	 * @param filename the location to store the list.
+	 * @return true if operation was successful.
+	 */
+	public boolean writeGTDList(ArrayList<GTDText> list, String filename) {
+		
+		if(list == null) {
+			return false;
+		}
+		
+		ArrayList<GTDListItem> beans = new ArrayList<>(list.size());
+		
+		for(GTDText node : list) {
+			beans.add(node.getItem());
+		}
+		
+		return write(beans, filename);
+	}
+	
+	/**
+	 * Read list of GTDListItems that were written to file using writeGTDList.
+	 * @param filename The file to read from.
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<GTDText> readGTDList(String filename) {
+		
+		Serializable obj = read(filename);
+		if(obj == null) {
+			return null;
+		}		
+		ArrayList<GTDListItem> beans = (ArrayList<GTDListItem>)obj;
+		
+		ArrayList<GTDText> nodes = new ArrayList<>(beans.size());
+		
+		for(GTDListItem bean : beans) {
+			nodes.add(ListItemElement.generate(bean));
+		}
+		
+		return nodes;
 	}
 }
