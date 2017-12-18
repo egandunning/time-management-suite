@@ -20,6 +20,11 @@
             </padding>
             <Text>GTD (Getting Things Done)</Text>
           </TextFlow>
+            <TextFlow><padding>
+              <Insets top="5" bottom="5" right="5" left="25" />
+            </padding>
+            <Text fx:id="deleteDrop">Drop here to delete</Text>
+          </TextFlow>
         </HBox>
       </items>
     </ToolBar>

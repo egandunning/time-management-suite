@@ -19,6 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.util.Pair;
 import models.GTDListItem;
 import ui.dialog.GTDListOptions;
@@ -47,6 +48,8 @@ public class GTDController {
 	private VBox projectsList;
 	@FXML
 	private VBox somedayList;
+	@FXML
+	private Text deleteDrop;
 	
 	//DataFormat for reading GTD list items from drag n drop clipboard
 	private static final DataFormat GTD_LIST_ITEM = new DataFormat("GTDListItem");
@@ -56,7 +59,6 @@ public class GTDController {
 		System.out.println("In initialize (GTD)");
 		
 		//drag and drop listeners
-		
 		lists = new ArrayList<>();
 		lists.addAll(Arrays.asList(
 				new Pair<>("inList", inList),
@@ -93,10 +95,14 @@ public class GTDController {
 			list.getValue().getChildren()
 					.addListener(new ListChangedHandler<Node>(list.getKey()));
 		}
+		
+		deleteDrop.setOnDragOver(new DragOverHandler<DragEvent>());
+		deleteDrop.setOnDragDropped(new DragDroppedHandler<DragEvent>(null));
 	}
 	
 	/**
-	 * Event handler for saving list to file when list is updated
+	 * Event handler for saving list to file and adding event 
+	 * listeners to GTD list items when list is updated.
 	 */
 	private class ListChangedHandler<T extends Node> implements ListChangeListener<T> {
 
@@ -174,7 +180,9 @@ public class GTDController {
 		
 		@Override
 		public void handle(Event event) {
-			layout.getChildren().add(ListItemElement.generate((GTDListItem) (((DragEvent)event).getDragboard().getContent(GTD_LIST_ITEM))));
+			if(layout != null) {
+				layout.getChildren().add(ListItemElement.generate((GTDListItem) (((DragEvent)event).getDragboard().getContent(GTD_LIST_ITEM))));
+			}
 			
 			GTDText lastElement = (GTDText) layout.getChildren().get(layout.getChildren().size()-1);
 			lastElement.setOnDragDetected(new DragHandler<MouseEvent>(lastElement));
