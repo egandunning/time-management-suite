@@ -15,11 +15,13 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 import models.GTDListItem;
+import ui.dialog.GTDListOptions;
 import ui.dialog.GTDNewIdea;
 import ui.element.GTDText;
 import util.ListItemElement;
@@ -75,6 +77,8 @@ public class GTDController {
 				//add stored list items to layouts
 				for(GTDText item : storedLists) {
 					list.getValue().getChildren().add(item);
+					
+					//add event listeners
 					item.setOnDragDetected(new DragHandler<MouseEvent>(item));
 					item.setOnDragDone(new DragDoneHandler<MouseEvent>(item));
 				}
@@ -114,6 +118,27 @@ public class GTDController {
 				//add node to list of list items to serialize
 				if(n instanceof GTDText) {
 					serializableList.add((GTDText)n);
+					
+					//allow users to double click on list items to modify them
+					n.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent event) {
+							
+							//listen for double click
+							if(event.getButton().equals(MouseButton.PRIMARY) &&
+									event.getClickCount() == 2) {
+								
+								//create and display options dialog
+								GTDListOptions dialog = new GTDListOptions();
+								dialog.show(((GTDText)n).getItem());
+								
+								//update text to reflect changes
+								((GTDText)n).setText(ListItemElement
+										.generate(((GTDText)n).getItem())
+										.getText());
+							}
+						}
+					});
 				}
 			}
 			
