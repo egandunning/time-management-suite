@@ -26,11 +26,13 @@ public class ListItemElement {
 		GTDText text;
 		LocalDateTime deadline;
 		
+		//get the user-defined deadline for the list item
 		deadline = item.getDeadline();
 		
+		//set text to display time until deadline
 		if(deadline != null) {
 			String timeUntilDeadline = timeUntilDeadline(deadline);
-			text = new GTDText(item.getText() + ": do it in " + timeUntilDeadline);
+			text = new GTDText(item.getText() + ": do it " + timeUntilDeadline);
 		} else {
 			text = new GTDText(item.getText());
 		}
@@ -56,6 +58,11 @@ public class ListItemElement {
 		
 		//find number of days until deadline
 		long hours = now.until(deadline, ChronoUnit.HOURS);
+		
+		//reached/passed the deadline
+		if(hours < 1) {
+			return "now";
+		}
 		//determine if "hour" should be plural
 		String hourPlural = (hours > 1) ? "s" : "";
 		
@@ -70,7 +77,7 @@ public class ListItemElement {
 			String dayPlural = (days > 1) ? "s" : "";
 			return String.format("%d day%s, %d hour%s", days, dayPlural, hours, hourPlural);//days + " day" + dayPlural + ", " + hours + " hour" + hourPlural;
 		} else {
-			return hours + " hour" + hourPlural;
+			return "in " + hours + " hour" + hourPlural;
 		}
 	}
 }
