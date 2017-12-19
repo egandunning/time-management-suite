@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import models.GTDListItem;
 import util.validation.FutureDate;
+import util.validation.TimeFormat;
 
 public class GTDListOptions {
 
@@ -59,11 +60,13 @@ public class GTDListOptions {
 		
 		dialog = new OptionsDialog();
 		
-		//show dialog, keep showing until valid date or no date is entered
+		//show dialog, keep showing until valid deadline or no deadline is entered
 		do {
 			dialog.showAndWait();
 			dialog.setTitle("Invalid deadline!!!");
-		} while(showDeadline.isSelected() && (!FutureDate.validate(datePicker.getValue())) );
+		} while(showDeadline.isSelected() &&
+				(!FutureDate.validate(datePicker.getValue()) ||
+						!TimeFormat.validate(timeField.getText())) );
 		
 		if(!showDeadline.isSelected()) {
 			item.setDeadline(null);
