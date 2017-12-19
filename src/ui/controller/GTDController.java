@@ -52,9 +52,10 @@ public class GTDController {
 	private VBox somedayList;
 	@FXML
 	private HBox deleteDrop;
+	
 	@FXML
 	private Image trashIcon;
-	private static final Image openTrashIcon = new Image("open-trash.png");
+	private static Image openTrashIcon = new Image("open-trash.png");
 	@FXML
 	private ImageView trashIconView;
 	
@@ -103,20 +104,23 @@ public class GTDController {
 					.addListener(new ListChangedHandler<Node>(list.getKey()));
 		}
 		
+		//allow users to drop list items into a HBox to delete them
 		deleteDrop.setOnDragOver(new DragOverHandler<DragEvent>());
+		deleteDrop.setOnDragDropped(new DragDroppedHandler<DragEvent>(null));
+		//change icon to open trash icon when dragging list item over
 		deleteDrop.setOnDragEntered(new EventHandler<DragEvent>() {
 			@Override
 			public void handle(DragEvent event) {
 				trashIconView.setImage(openTrashIcon);
 			}
 		});
+		//change icon back to closed trash icon when nothing is dragged over
 		deleteDrop.setOnDragExited(new EventHandler<DragEvent>() {
 			@Override
 			public void handle(DragEvent event) {
 				trashIconView.setImage(trashIcon);
 			}
 		});
-		deleteDrop.setOnDragDropped(new DragDroppedHandler<DragEvent>(null));
 	}
 	
 	/**
@@ -199,13 +203,21 @@ public class GTDController {
 		
 		@Override
 		public void handle(Event event) {
+			//if a null layout is passed, the dragged element is effectively
+			//deleted
 			if(layout != null) {
-				layout.getChildren().add(ListItemElement.generate((GTDListItem) (((DragEvent)event).getDragboard().getContent(GTD_LIST_ITEM))));
+				//generate GTDText element from clipboard data
+				layout.getChildren().add(ListItemElement.generate(
+						(GTDListItem) (((DragEvent)event).getDragboard()
+								.getContent(GTD_LIST_ITEM))));
 			}
 			
+			//add event listeners to the newly dragged list item
 			GTDText lastElement = (GTDText) layout.getChildren().get(layout.getChildren().size()-1);
 			lastElement.setOnDragDetected(new DragHandler<MouseEvent>(lastElement));
 			lastElement.setOnDragDone(new DragDoneHandler<MouseEvent>(lastElement));
+			
+			//triggers drag done event handler
 			((DragEvent)event).setDropCompleted(true);
 		}
 	}
