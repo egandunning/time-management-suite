@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import models.GTDListItem;
+import util.validation.FutureDate;
 
 public class GTDListOptions {
 
@@ -52,14 +53,18 @@ public class GTDListOptions {
 			timeField.setVisible(deadlineVisible);
 			datePicker = new DatePicker(item.getDeadline().toLocalDate());
 			datePicker.setVisible(deadlineVisible);
-			
 		}
 		
 		ideaField = new TextField(item.getText());
 		
 		dialog = new OptionsDialog();
 		
-		dialog.showAndWait();
+		//show dialog, keep showing until valid date or no date is entered
+		do {
+			dialog.showAndWait();
+			dialog.setTitle("Invalid deadline!!!");
+		} while(showDeadline.isSelected() && (!FutureDate.validate(datePicker.getValue())) );
+		
 		if(!showDeadline.isSelected()) {
 			item.setDeadline(null);
 		} else {
