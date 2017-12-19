@@ -12,7 +12,7 @@ public class MainController {
 	public Tab gtdTab;
 	
 	/**
-	 * Called when GUI loads. Loads FXML file and inserts into the intro tab
+	 * Called when GUI loads.
 	 */
 	@FXML
 	protected void initialize() {

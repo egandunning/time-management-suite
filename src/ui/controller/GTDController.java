@@ -11,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
@@ -18,8 +20,8 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.util.Pair;
 import models.GTDListItem;
 import ui.dialog.GTDListOptions;
@@ -49,7 +51,12 @@ public class GTDController {
 	@FXML
 	private VBox somedayList;
 	@FXML
-	private Text deleteDrop;
+	private HBox deleteDrop;
+	@FXML
+	private Image trashIcon;
+	private static final Image openTrashIcon = new Image("open-trash.png");
+	@FXML
+	private ImageView trashIconView;
 	
 	//DataFormat for reading GTD list items from drag n drop clipboard
 	private static final DataFormat GTD_LIST_ITEM = new DataFormat("GTDListItem");
@@ -97,6 +104,18 @@ public class GTDController {
 		}
 		
 		deleteDrop.setOnDragOver(new DragOverHandler<DragEvent>());
+		deleteDrop.setOnDragEntered(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				trashIconView.setImage(openTrashIcon);
+			}
+		});
+		deleteDrop.setOnDragExited(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				trashIconView.setImage(trashIcon);
+			}
+		});
 		deleteDrop.setOnDragDropped(new DragDroppedHandler<DragEvent>(null));
 	}
 	

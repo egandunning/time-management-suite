@@ -3,7 +3,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
 
 <ScrollPane fx:controller="ui.controller.GTDController"
   xmlns:fx="http://javafx.com/fxml/1" minWidth="10">
@@ -20,11 +22,17 @@
             </padding>
             <Text>GTD (Getting Things Done)</Text>
           </TextFlow>
-            <TextFlow><padding>
-              <Insets top="5" bottom="5" right="5" left="25" />
-            </padding>
-            <Text fx:id="deleteDrop">Drop here to delete</Text>
-          </TextFlow>
+          <HBox fx:id="deleteDrop">
+            <TextFlow>
+              <padding>
+                <Insets top="5" bottom="5" right="5" left="25" />
+              </padding>
+              <Text>Drop here to delete</Text>
+            </TextFlow>
+            <ImageView fx:id="trashIconView" fitWidth="25" fitHeight="25" smooth="true">
+              <Image fx:id="trashIcon" url="trash.png"></Image>
+            </ImageView>
+          </HBox>
         </HBox>
       </items>
     </ToolBar>
