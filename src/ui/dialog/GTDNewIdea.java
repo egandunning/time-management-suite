@@ -22,6 +22,8 @@ import javafx.util.Pair;
 import models.GTDListItem;
 import ui.element.GTDText;
 import util.ListItemElement;
+import util.validation.FutureDate;
+import util.validation.TimeFormat;
 
 public class GTDNewIdea {
 
@@ -61,7 +63,15 @@ public class GTDNewIdea {
 	 * to put the idea in, or null if the user presses cancel.
 	 */
 	public Pair<GTDText, String> getIdeaAndList() {
-		Optional<ButtonType> choice = dialog.showAndWait();
+		
+		Optional<ButtonType> choice = null;
+		
+		do {
+			choice = dialog.showAndWait();
+			dialog.setTitle("Invalid deadline!!!");
+		} while(showDeadline.isSelected() &&
+				(!FutureDate.validate(datePicker.getValue()) ||
+						!TimeFormat.validate(timeField.getText())) );
 		
 		//create new list item from info entered by user
 		GTDListItem item = new GTDListItem();
