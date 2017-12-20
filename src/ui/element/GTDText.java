@@ -13,14 +13,18 @@ public class GTDText extends Text {
 	//Stores data about the list item: deadline and description
 	private GTDListItem item;
 	
-	public GTDText() {}
+	public GTDText() {
+		setWrappingWidth(150);
+	}
 	
 	public GTDText(String text) {
 		super(text);
+		setWrappingWidth(150);
 	}
 
 	public GTDText(double x, double y, String text) {
 		super(x, y, text);
+		setWrappingWidth(150);
 	}
 
 	public GTDListItem getItem() {
