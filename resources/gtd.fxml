@@ -33,6 +33,12 @@
               <Image fx:id="trashIcon" url="trash.png"></Image>
             </ImageView>
           </HBox>
+          <HBox>
+            <padding>
+              <Insets top="0" bottom="0" right="0" left="25" />
+            </padding>
+            <Button fx:id="exportButton" text="Export" onAction="#exportAction"/>
+          </HBox>
         </HBox>
       </items>
     </ToolBar>

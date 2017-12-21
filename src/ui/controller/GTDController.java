@@ -3,7 +3,9 @@ package ui.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import data.persistence.GTDExport;
 import data.persistence.Serializer;
 import javafx.collections.ListChangeListener;
 import javafx.event.Event;
@@ -11,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -38,6 +41,8 @@ public class GTDController {
 
 	@FXML
 	private Button newIdea;
+	@FXML
+	private Button exportButton;
 	@FXML
 	private ArrayList<Pair<String,VBox>> lists;
 	@FXML
@@ -279,8 +284,23 @@ public class GTDController {
 		addIdeaToList(idea, list);		
 	}
 	
+	@FXML
+	protected void exportAction() {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Export to .csv");
+		dialog.setHeaderText("");
+		dialog.setGraphic(null);
+		dialog.setContentText("Enter filename to write to:");
+		
+		Optional<String> result = dialog.showAndWait();
+		if(result.isPresent()) {
+			System.out.println(GTDExport.write(result.get(), lists, true));
+		}
+	}
+	
 	/**
 	 * Add an idea to a list. List types are defined in data.GTDLists.java
+	 * Helper method for new idea event handler.
 	 * @param idea the idea to record
 	 * @param list the list to record idea in
 	 */
