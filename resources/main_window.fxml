@@ -16,6 +16,10 @@
 		<Tab fx:id="gtdTab" text="GTD">
 		  <fx:include source="gtd.fxml"/>
 		</Tab>
+    
+        <Tab text="Pomodoro">
+          <fx:include source="pomodoro.fxml"/>
+        </Tab>
 		
 	</TabPane>
 </AnchorPane>

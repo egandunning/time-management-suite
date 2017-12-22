@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+
+<GridPane fx:controller="ui.controller.Pomodoro" xmlns:fx="http://javafx.com/fxml/1" minWidth="10">
+
+  <ToolBar minWidth="10000" GridPane.columnSpan="6"
+    GridPane.rowIndex="0">
+    <items>
+      <Button fx:id="squash" onAction="#squashTomato" text="Squash tomato"/>
+    </items>
+  
+  </ToolBar>
+  
+  <ImageView fx:id="tomato" GridPane.columnIndex="0" GridPane.rowIndex="1"
+    fitWidth="300" fitHeight="300">
+    <Image url="tomato.png"/>
+  </ImageView>
+  
+  <TextFlow GridPane.columnIndex="0" GridPane.rowIndex="2">
+    <padding>
+      <Insets top="5" bottom="5" right="5" left="50" />
+    </padding>
+    <Text fx:id="timeDisplay"></Text>
+  </TextFlow>
+
+</GridPane>

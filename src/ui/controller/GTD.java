@@ -37,7 +37,7 @@ import util.ListItemElement;
  * @author Egan Dunning
  *
  */
-public class GTDController {
+public class GTD {
 
 	@FXML
 	private Button newIdea;
