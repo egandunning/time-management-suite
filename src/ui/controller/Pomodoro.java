@@ -1,5 +1,6 @@
 package ui.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.AudioClip;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -91,6 +93,7 @@ public class Pomodoro {
 					switch(tomatoTime) {
 					case 0:
 						timeDisplay.setText("Completed!");
+						new AudioClip(new File("resources/Ladenklingel.ogg.mp3").toURI().toString()).play();
 						tomatoTimer.cancel();
 						break;
 					case 1:
@@ -100,7 +103,7 @@ public class Pomodoro {
 						timeDisplay.setText(tomatoTime + " minutes left");
 					}
 				}
-			}, 60000, 60000);
+			}, 6000, 6000);
 		}
 	}
 

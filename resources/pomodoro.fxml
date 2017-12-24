@@ -34,7 +34,7 @@
     <padding>
       <Insets top="5" bottom="5" right="5" left="5" />
     </padding>
-    <TextField fx:id="taskCompletedField"/>
+    <TextField fx:id="taskCompletedField" minWidth="300"/>
   </HBox>
     
 </GridPane>
