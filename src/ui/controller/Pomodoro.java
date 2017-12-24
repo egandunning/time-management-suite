@@ -20,7 +20,7 @@ public class Pomodoro {
 	@FXML private Text timeDisplay;
 	@FXML private TextField taskCompletedField;
 	
-	private static final Timer TOMATO_TIMER = new Timer();;
+	private static Timer tomatoTimer = new Timer();;
 	private int tomatoTime;
 	
 	@FXML
@@ -63,7 +63,7 @@ public class Pomodoro {
 	@FXML
 	protected void squashTomato(Event event) {
 		timeDisplay.setText("SQUASHED!");
-		TOMATO_TIMER.cancel();
+		tomatoTimer.cancel();
 	}
 
 	/**
@@ -78,16 +78,16 @@ public class Pomodoro {
 		public void handle(T event) {
 			tomatoTime = 3;
 			timeDisplay.setText(tomatoTime + " minutes left");
-			
+			tomatoTimer = new Timer();
 			//update time display every minute
-			TOMATO_TIMER.scheduleAtFixedRate(new TimerTask() {
+			tomatoTimer.scheduleAtFixedRate(new TimerTask() {
 				@Override
 				public void run() {
 					tomatoTime--;
 					switch(tomatoTime) {
 					case 0:
-						timeDisplay.setText("Tomato completed!");
-						TOMATO_TIMER.cancel();
+						timeDisplay.setText("Completed!");
+						tomatoTimer.cancel();
 						break;
 					case 1:
 						timeDisplay.setText(tomatoTime + " minute left");
@@ -104,6 +104,6 @@ public class Pomodoro {
 	 * Cancel the timer used for timing tomatoes.
 	 */
 	public static void cancelTimer() {
-		TOMATO_TIMER.cancel();
+		tomatoTimer.cancel();
 	}
 }
