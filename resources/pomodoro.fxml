@@ -37,4 +37,14 @@
     <TextField fx:id="taskCompletedField" minWidth="300"/>
   </HBox>
     
+  <HBox GridPane.columnIndex="0" GridPane.rowIndex="5">
+    <padding>
+      <Insets top="5" bottom="5" right="5" left="40" />
+    </padding>
+    <Label><padding><Insets right="10"/></padding>Bell volume</Label>
+    
+    <Slider fx:id="volumeSelect" min="0" max="1" value="1">
+      <padding><Insets top="3"/></padding>
+    </Slider>
+  </HBox>
 </GridPane>

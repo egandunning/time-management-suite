@@ -9,6 +9,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +23,7 @@ public class Pomodoro {
 	@FXML private ImageView tomato;
 	@FXML private Text timeDisplay;
 	@FXML private TextField taskCompletedField;
+	@FXML private Slider volumeSelect;
 	
 	private Timer tomatoTimer;
 	private static final ArrayList<Timer> TIMERS = new ArrayList<>();
@@ -93,7 +95,10 @@ public class Pomodoro {
 					switch(tomatoTime) {
 					case 0:
 						timeDisplay.setText("Completed!");
-						new AudioClip(new File("resources/Ladenklingel.ogg.mp3").toURI().toString()).play();
+						//play bell sound
+						//https://commons.wikimedia.org/wiki/File:Ladenklingel.ogg
+						new AudioClip(new File("resources/Ladenklingel.ogg.mp3").toURI().toString())
+							.play(volumeSelect.getValue());
 						tomatoTimer.cancel();
 						break;
 					case 1:
