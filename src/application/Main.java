@@ -25,5 +25,7 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
+		//cancel timer on the pomodoro tab.
+		ui.controller.Pomodoro.cancelTimer();
 	}
 }

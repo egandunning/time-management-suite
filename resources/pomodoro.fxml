@@ -5,6 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
 
 
 <GridPane fx:controller="ui.controller.Pomodoro" xmlns:fx="http://javafx.com/fxml/1" minWidth="10">
@@ -24,9 +25,16 @@
   
   <TextFlow GridPane.columnIndex="0" GridPane.rowIndex="2">
     <padding>
-      <Insets top="5" bottom="5" right="5" left="50" />
+      <Insets top="5" bottom="5" right="5" left="70" />
     </padding>
     <Text fx:id="timeDisplay"></Text>
   </TextFlow>
-
+    
+  <HBox GridPane.columnIndex="0" GridPane.rowIndex="3">
+    <padding>
+      <Insets top="5" bottom="5" right="5" left="5" />
+    </padding>
+    <TextField fx:id="taskCompletedField"/>
+  </HBox>
+    
 </GridPane>

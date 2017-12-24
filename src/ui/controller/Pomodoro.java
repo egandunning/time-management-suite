@@ -1,24 +1,32 @@
 package ui.controller;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class Pomodoro {
 
-	@FXML
-	private Button squash;
-	@FXML
-	private ImageView tomato;
-	@FXML
-	private Text timeDisplay;
+	@FXML private Button squash;
+	@FXML private ImageView tomato;
+	@FXML private Text timeDisplay;
+	@FXML private TextField taskCompletedField;
+	
+	private static final Timer TOMATO_TIMER = new Timer();;
+	private int tomatoTime;
 	
 	@FXML
 	protected void initialize() {
+		
+		timeDisplay.setFont(new Font(25));
 		
 		//start tomato when clicked
 		tomato.setOnMouseClicked(new StartTomatoHandler<MouseEvent>());
@@ -54,7 +62,8 @@ public class Pomodoro {
 	
 	@FXML
 	protected void squashTomato(Event event) {
-		System.out.println("Squash me");
+		timeDisplay.setText("SQUASHED!");
+		TOMATO_TIMER.cancel();
 	}
 
 	/**
@@ -67,8 +76,34 @@ public class Pomodoro {
 
 		@Override
 		public void handle(T event) {
-			timeDisplay.setText("Started tomato (timer coming soon)");
+			tomatoTime = 3;
+			timeDisplay.setText(tomatoTime + " minutes left");
+			
+			//update time display every minute
+			TOMATO_TIMER.scheduleAtFixedRate(new TimerTask() {
+				@Override
+				public void run() {
+					tomatoTime--;
+					switch(tomatoTime) {
+					case 0:
+						timeDisplay.setText("Tomato completed!");
+						TOMATO_TIMER.cancel();
+						break;
+					case 1:
+						timeDisplay.setText(tomatoTime + " minute left");
+						break;
+					default:
+						timeDisplay.setText(tomatoTime + " minutes left");
+					}
+				}
+			}, 60000, 60000);
 		}
-		
+	}
+
+	/**
+	 * Cancel the timer used for timing tomatoes.
+	 */
+	public static void cancelTimer() {
+		TOMATO_TIMER.cancel();
 	}
 }
