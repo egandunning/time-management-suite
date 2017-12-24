@@ -1,5 +1,6 @@
 package ui.controller;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,7 +21,8 @@ public class Pomodoro {
 	@FXML private Text timeDisplay;
 	@FXML private TextField taskCompletedField;
 	
-	private static Timer tomatoTimer = new Timer();;
+	private Timer tomatoTimer;
+	private static final ArrayList<Timer> TIMERS = new ArrayList<>();
 	private int tomatoTime;
 	
 	@FXML
@@ -79,6 +81,8 @@ public class Pomodoro {
 			tomatoTime = 3;
 			timeDisplay.setText(tomatoTime + " minutes left");
 			tomatoTimer = new Timer();
+			//add timer to list of timer objects, used for canceling timers.
+			TIMERS.add(tomatoTimer);
 			//update time display every minute
 			tomatoTimer.scheduleAtFixedRate(new TimerTask() {
 				@Override
@@ -101,9 +105,11 @@ public class Pomodoro {
 	}
 
 	/**
-	 * Cancel the timer used for timing tomatoes.
+	 * Cancel any timers used for timing tomatoes.
 	 */
 	public static void cancelTimer() {
-		tomatoTimer.cancel();
+		for(Timer t : TIMERS) {
+			t.cancel();
+		}
 	}
 }
