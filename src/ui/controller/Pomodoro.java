@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
 
 public class Pomodoro {
 
-	private static final int ONE_MINUTE = 60000;
+	private static final int ONE_MINUTE = 600;
 	
 	@FXML private Button squash;
 	@FXML private ImageView tomato;
@@ -105,22 +105,7 @@ public class Pomodoro {
 			cancelTimer();
 			tomatoTimer = new Timer();
 			//update time display every minute (60,000 milliseconds)
-			tomatoTimer.scheduleAtFixedRate(new TimerTask() {
-				@Override
-				public void run() {
-					tomatoTime--;
-					switch(tomatoTime) {
-					case 0:
-						tomatoFinished();
-						break;
-					case 1:
-						timeDisplay.setText(tomatoTime + " minute left");
-						break;
-					default:
-						timeDisplay.setText(tomatoTime + " minutes left");
-					}
-				}
-			}, ONE_MINUTE, ONE_MINUTE);
+			tomatoTimer.scheduleAtFixedRate(new TomatoTimerTask(), ONE_MINUTE, ONE_MINUTE);
 		}
 	}
 	
@@ -158,25 +143,50 @@ public class Pomodoro {
 		timeDisplay.setText(tomatoTime + " minute" + s + " left");
 		cancelTimer();
 		tomatoTimer = new Timer();
+		
+		taskCompletedField.setEditable(false);
+		taskCompletedButton.setDisable(true);
 		//update time display every minute (60,000 milliseconds)
-		tomatoTimer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				tomatoTime--;
-				switch(tomatoTime) {
-				case 0:
+		tomatoTimer.scheduleAtFixedRate(new TomatoTimerTask(false), ONE_MINUTE, ONE_MINUTE);
+	}
+	
+	/**
+	 * TimerTask for handling updating time display, bell notification and
+	 * action to take at the end of breaks, tomatoes.
+	 * @author Egan Dunning
+	 *
+	 */
+	class TomatoTimerTask extends TimerTask {
+		
+		private boolean isTomato = true;
+		
+		public TomatoTimerTask() {}
+		
+		public TomatoTimerTask(boolean isTomato) {
+			this.isTomato = isTomato;
+		}
+		
+		@Override
+		public void run() {
+			tomatoTime--;
+			switch(tomatoTime) {
+			case 0:
+				if(isTomato) {
+					tomatoFinished();
+				} else {
 					timeDisplay.setText("Break is over!");
 					cancelTimer();
-					break;
-				case 1:
-					timeDisplay.setText(tomatoTime + " minute left");
-					break;
-				default:
-					timeDisplay.setText(tomatoTime + " minutes left");
 				}
+				break;
+			case 1:
+				timeDisplay.setText(tomatoTime + " minute left");
+				break;
+			default:
+				timeDisplay.setText(tomatoTime + " minutes left");
 			}
-		}, ONE_MINUTE, ONE_MINUTE);
+		}
 	}
+	
 	/**
 	 * Cancel any timers used for timing tomatoes.
 	 */
