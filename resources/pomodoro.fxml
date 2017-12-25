@@ -5,8 +5,6 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.HBox?>
-
 
 <GridPane fx:controller="ui.controller.Pomodoro" xmlns:fx="http://javafx.com/fxml/1" minWidth="10">
 
@@ -15,28 +13,31 @@
     <items>
       <Button fx:id="squash" onAction="#squashTomato" text="Squash tomato"/>
     </items>
-  
   </ToolBar>
   
+  <!-- Clickable tomato. Clicking tomato starts timer. -->
   <ImageView fx:id="tomato" GridPane.columnIndex="0" GridPane.rowIndex="1"
     fitWidth="300" fitHeight="300">
     <Image url="tomato.png"/>
   </ImageView>
   
+  <!-- Displays the remaining time in minutes for the current tomato. -->
   <TextFlow GridPane.columnIndex="0" GridPane.rowIndex="2">
     <padding>
       <Insets top="5" bottom="5" right="5" left="70" />
     </padding>
     <Text fx:id="timeDisplay"></Text>
   </TextFlow>
-    
+  
+  <!-- Text field to enter the task completed during past tomato. -->
   <HBox GridPane.columnIndex="0" GridPane.rowIndex="3">
     <padding>
       <Insets top="5" bottom="5" right="5" left="5" />
     </padding>
     <TextField fx:id="taskCompletedField" minWidth="300"/>
   </HBox>
-    
+  
+  <!-- Volume adjust for bell. -->
   <HBox GridPane.columnIndex="0" GridPane.rowIndex="4">
     <padding>
       <Insets top="5" bottom="5" right="5" left="40" />
@@ -48,6 +49,7 @@
     </Slider>
   </HBox>
   
+  <!-- Spinner to select length of a tomato in minutes, default is 25. -->
   <HBox GridPane.columnIndex="0" GridPane.rowIndex="5">
     <padding>
       <Insets top="5" bottom="5" right="5" left="40" />
@@ -55,9 +57,9 @@
     <Label><padding><Insets right="10" top="3"/></padding>Tomato length (minutes)</Label>
     <Spinner fx:id="tomatoMinutes" editable="true" maxWidth="70">
       <valueFactory>
-        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="60" initialValue="25"/>
+        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="120" initialValue="25"/>
       </valueFactory>
-    <!--  value="25" -->
     </Spinner> 
   </HBox>
+  
 </GridPane>

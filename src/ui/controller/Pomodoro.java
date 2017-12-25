@@ -26,6 +26,8 @@ public class Pomodoro {
 	@FXML private Slider volumeSelect;
 	@FXML private Spinner<Integer> tomatoMinutes;
 	
+	//This timer is static so that the main method can cancel the running
+	//timer when the user exits the program.
 	private static Timer tomatoTimer;
 	private int tomatoTime;
 	
@@ -41,12 +43,14 @@ public class Pomodoro {
 		tomato.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				//rotate one degree
 				tomato.setRotate(1);
 			}
 		});
 		tomato.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				//rotate back one degree
 				tomato.setRotate(-1);
 			}
 		});
@@ -66,6 +70,10 @@ public class Pomodoro {
 		});
 	}
 	
+	/**
+	 * Allow user to squash(cancel) a tomato.
+	 * @param event
+	 */
 	@FXML
 	protected void squashTomato(Event event) {
 		timeDisplay.setText("SQUASHED!");
@@ -73,26 +81,26 @@ public class Pomodoro {
 	}
 
 	/**
-	 * Event handler for starting a new tomato
+	 * Event handler for starting a new tomato. Handles updating timer as
+	 * time passes.
 	 * @author Egan Dunning
 	 *
 	 * @param <T> The MouseEvent
 	 */
 	class StartTomatoHandler<T extends MouseEvent> implements EventHandler<T> {
-
 		@Override
 		public void handle(T event) {
 			tomatoTime = tomatoMinutes.getValue();
 			timeDisplay.setText(tomatoTime + " minutes left");
 			cancelTimer();
 			tomatoTimer = new Timer();
-			//update time display every minute
+			//update time display every minute (60,000 milliseconds)
 			tomatoTimer.scheduleAtFixedRate(new TimerTask() {
 				@Override
 				public void run() {
 					tomatoTime--;
 					switch(tomatoTime) {
-					case 0:
+					case 0: //tomato finished
 						timeDisplay.setText("Completed!");
 						//play bell sound
 						//https://commons.wikimedia.org/wiki/File:Ladenklingel.ogg
@@ -107,7 +115,7 @@ public class Pomodoro {
 						timeDisplay.setText(tomatoTime + " minutes left");
 					}
 				}
-			}, 6000, 6000);
+			}, 60000, 60000);
 		}
 	}
 
