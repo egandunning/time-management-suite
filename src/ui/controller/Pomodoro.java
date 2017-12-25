@@ -1,6 +1,8 @@
 package ui.controller;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -139,22 +141,25 @@ public class Pomodoro {
 	@FXML
 	protected void submitTaskDescription() {
 		pomodoroCount++;
-		finishedTomatoes.getChildren().add(new Text(taskCompletedField.getText()));
+		String content = taskCompletedField.getText();
+		content += LocalDateTime.now().format(DateTimeFormatter.ofPattern(", MM-dd-YYYY hh:mm"));
+		finishedTomatoes.getChildren().add(new Text(content));
 		//break time! 5 minutes, 20 minutes every 4th tomato
 		if(pomodoroCount % 4 == 0) {
 			tomatoTime = 20;
 		} else {
 			tomatoTime = 5;
 		}
-		String s = (tomatoTime > 1)?"s":"";
+		String s = (tomatoTime > 1) ? "s" : "";
 		timeDisplay.setText(tomatoTime + " minute" + s + " left");
 		cancelTimer();
-		tomatoTimer = new Timer();
+		
 		
 		taskCompletedField.setEditable(false);
-		taskCompletedField.setText(""); 
+		taskCompletedField.setText("");
 		taskCompletedButton.setDisable(true);
 		//update time display every minute (60,000 milliseconds)
+		tomatoTimer = new Timer();
 		tomatoTimer.scheduleAtFixedRate(new TomatoTimerTask(false), ONE_MINUTE, ONE_MINUTE);
 	}
 	
