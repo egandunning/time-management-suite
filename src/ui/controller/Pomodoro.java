@@ -1,7 +1,6 @@
 package ui.controller;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,7 +27,6 @@ public class Pomodoro {
 	@FXML private Spinner<Integer> tomatoMinutes;
 	
 	private static Timer tomatoTimer;
-	private static final ArrayList<Timer> TIMERS = new ArrayList<>();
 	private int tomatoTime;
 	
 	@FXML
