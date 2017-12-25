@@ -5,6 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
 
 <GridPane fx:controller="ui.controller.Pomodoro" xmlns:fx="http://javafx.com/fxml/1" minWidth="10">
 
@@ -16,13 +17,13 @@
   </ToolBar>
   
   <!-- Clickable tomato. Clicking tomato starts timer. -->
-  <ImageView fx:id="tomato" GridPane.columnIndex="0" GridPane.rowIndex="1"
+  <ImageView fx:id="tomato" GridPane.columnIndex="0" GridPane.rowIndex="2"
     fitWidth="300" fitHeight="300">
     <Image url="tomato.png"/>
   </ImageView>
   
   <!-- Displays the remaining time in minutes for the current tomato. -->
-  <TextFlow GridPane.columnIndex="0" GridPane.rowIndex="2">
+  <TextFlow GridPane.columnIndex="0" GridPane.rowIndex="3">
     <padding>
       <Insets top="5" bottom="5" right="5" left="70" />
     </padding>
@@ -30,15 +31,17 @@
   </TextFlow>
   
   <!-- Text field to enter the task completed during past tomato. -->
-  <HBox GridPane.columnIndex="0" GridPane.rowIndex="3">
+  <HBox GridPane.columnIndex="0" GridPane.rowIndex="4">
     <padding>
       <Insets top="5" bottom="5" right="5" left="5" />
     </padding>
-    <TextField fx:id="taskCompletedField" minWidth="300"/>
+    <TextField fx:id="taskCompletedField" minWidth="240" editable="false"/>
+    <Button fx:id="taskCompletedButton" text="Submit" disable="true"
+      onAction="#submitTaskDescription"/>
   </HBox>
   
   <!-- Volume adjust for bell. -->
-  <HBox GridPane.columnIndex="0" GridPane.rowIndex="4">
+  <HBox GridPane.columnIndex="0" GridPane.rowIndex="5">
     <padding>
       <Insets top="5" bottom="5" right="5" left="40" />
     </padding>
@@ -50,7 +53,7 @@
   </HBox>
   
   <!-- Spinner to select length of a tomato in minutes, default is 25. -->
-  <HBox GridPane.columnIndex="0" GridPane.rowIndex="5">
+  <HBox GridPane.columnIndex="0" GridPane.rowIndex="6">
     <padding>
       <Insets top="5" bottom="5" right="5" left="40" />
     </padding>
@@ -62,4 +65,19 @@
     </Spinner> 
   </HBox>
   
+  
+  <TextFlow GridPane.columnIndex="1" GridPane.rowIndex="1">
+    <padding>
+      <Insets top="5" bottom="5" right="5" left="20" />
+    </padding>
+    <Text fx:id="finishedTomatoesTitle">Finished Tomatoes</Text>
+  </TextFlow>
+  
+  <!-- Layout to hold list of completed tomatoes. -->
+  <VBox fx:id="finishedTomatoes" GridPane.columnIndex="1" GridPane.rowIndex="2"
+    GridPane.rowSpan="6">
+    <padding>
+      <Insets top="5" bottom="5" right="5" left="20" />
+    </padding>
+  </VBox>
 </GridPane>
