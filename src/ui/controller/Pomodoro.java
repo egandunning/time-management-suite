@@ -38,6 +38,7 @@ public class Pomodoro {
 	//timer when the user exits the program.
 	private static Timer tomatoTimer;
 	private int tomatoTime;
+	private int pomodoroCount = 0;
 		
 	@FXML
 	protected void initialize() {
@@ -133,18 +134,25 @@ public class Pomodoro {
 	 * This runs when the user ends a tomato, then submits a description
 	 * of what they did during that tomato.
 	 * Adds description of task to list, then starts 5 minute break.
+	 * Increments finished tomato counter.
 	 */
 	@FXML
 	protected void submitTaskDescription() {
+		pomodoroCount++;
 		finishedTomatoes.getChildren().add(new Text(taskCompletedField.getText()));
-		//break time!
-		tomatoTime = 5;
+		//break time! 5 minutes, 20 minutes every 4th tomato
+		if(pomodoroCount % 4 == 0) {
+			tomatoTime = 20;
+		} else {
+			tomatoTime = 5;
+		}
 		String s = (tomatoTime > 1)?"s":"";
 		timeDisplay.setText(tomatoTime + " minute" + s + " left");
 		cancelTimer();
 		tomatoTimer = new Timer();
 		
 		taskCompletedField.setEditable(false);
+		taskCompletedField.setText(""); 
 		taskCompletedButton.setDisable(true);
 		//update time display every minute (60,000 milliseconds)
 		tomatoTimer.scheduleAtFixedRate(new TomatoTimerTask(false), ONE_MINUTE, ONE_MINUTE);
@@ -154,7 +162,6 @@ public class Pomodoro {
 	 * TimerTask for handling updating time display, bell notification and
 	 * action to take at the end of breaks, tomatoes.
 	 * @author Egan Dunning
-	 *
 	 */
 	class TomatoTimerTask extends TimerTask {
 		
