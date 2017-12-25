@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -24,8 +25,9 @@ public class Pomodoro {
 	@FXML private Text timeDisplay;
 	@FXML private TextField taskCompletedField;
 	@FXML private Slider volumeSelect;
+	@FXML private Spinner<Integer> tomatoMinutes;
 	
-	private Timer tomatoTimer;
+	private static Timer tomatoTimer;
 	private static final ArrayList<Timer> TIMERS = new ArrayList<>();
 	private int tomatoTime;
 	
@@ -69,7 +71,7 @@ public class Pomodoro {
 	@FXML
 	protected void squashTomato(Event event) {
 		timeDisplay.setText("SQUASHED!");
-		tomatoTimer.cancel();
+		cancelTimer();
 	}
 
 	/**
@@ -82,11 +84,10 @@ public class Pomodoro {
 
 		@Override
 		public void handle(T event) {
-			tomatoTime = 3;
+			tomatoTime = tomatoMinutes.getValue();
 			timeDisplay.setText(tomatoTime + " minutes left");
+			cancelTimer();
 			tomatoTimer = new Timer();
-			//add timer to list of timer objects, used for canceling timers.
-			TIMERS.add(tomatoTimer);
 			//update time display every minute
 			tomatoTimer.scheduleAtFixedRate(new TimerTask() {
 				@Override
@@ -99,7 +100,7 @@ public class Pomodoro {
 						//https://commons.wikimedia.org/wiki/File:Ladenklingel.ogg
 						new AudioClip(new File("resources/Ladenklingel.ogg.mp3").toURI().toString())
 							.play(volumeSelect.getValue());
-						tomatoTimer.cancel();
+						cancelTimer();
 						break;
 					case 1:
 						timeDisplay.setText(tomatoTime + " minute left");
@@ -116,8 +117,8 @@ public class Pomodoro {
 	 * Cancel any timers used for timing tomatoes.
 	 */
 	public static void cancelTimer() {
-		for(Timer t : TIMERS) {
-			t.cancel();
+		if(tomatoTimer != null) {
+			tomatoTimer.cancel();
 		}
 	}
 }
