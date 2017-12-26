@@ -144,7 +144,7 @@ public class Pomodoro {
 		});
 		//play bell sound
 		//https://commons.wikimedia.org/wiki/File:Ladenklingel.ogg
-		new AudioClip(getClass().getClassLoader().getResource("Ladenklingel.ogg.mp3")
+		new AudioClip(getClass().getClassLoader().getResource("Ladenklingel.mp3")
 				.toString()).play();
 		cancelTimer();
 	}
