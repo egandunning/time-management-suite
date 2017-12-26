@@ -1,11 +1,12 @@
 package ui.controller;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import data.persistence.Serializer;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -41,9 +42,25 @@ public class Pomodoro {
 	private static Timer tomatoTimer;
 	private int tomatoTime;
 	private int pomodoroCount = 0;
+	private ArrayList<String> tomatoes;
 		
+	@SuppressWarnings("unchecked")
 	@FXML
 	protected void initialize() {
+		
+		//get stored tomatoes
+		tomatoes = new ArrayList<String>();
+		Object readObj = Serializer.getInstance().read("tomatoes");
+		//check if object read in is an ArrayList of strings
+		if(readObj instanceof ArrayList<?> &&
+				((ArrayList<?>)readObj).size() > 0 &&
+				((ArrayList<?>)readObj).get(0) instanceof String) {
+			tomatoes = (ArrayList<String>) readObj;
+		}
+		
+		for(String tomato : tomatoes) {
+			finishedTomatoes.getChildren().add(new Text(tomato));
+		}
 		
 		timeDisplay.setFont(new Font(25));
 		finishedTomatoesTitle.setFont(new Font(20));
@@ -127,8 +144,8 @@ public class Pomodoro {
 		});
 		//play bell sound
 		//https://commons.wikimedia.org/wiki/File:Ladenklingel.ogg
-		new AudioClip(new File("resources/Ladenklingel.ogg.mp3").toURI().toString())
-			.play(volumeSelect.getValue());
+		new AudioClip(getClass().getClassLoader().getResource("Ladenklingel.ogg.mp3")
+				.toString()).play();
 		cancelTimer();
 	}
 	
@@ -144,6 +161,8 @@ public class Pomodoro {
 		String content = taskCompletedField.getText();
 		content += LocalDateTime.now().format(DateTimeFormatter.ofPattern(", MM-dd-YYYY hh:mm"));
 		finishedTomatoes.getChildren().add(new Text(content));
+		tomatoes.add(content);
+		Serializer.getInstance().write(tomatoes, "tomatoes");
 		//break time! 5 minutes, 20 minutes every 4th tomato
 		if(pomodoroCount % 4 == 0) {
 			tomatoTime = 20;
@@ -183,9 +202,9 @@ public class Pomodoro {
 			tomatoTime--;
 			switch(tomatoTime) {
 			case 0:
-				if(isTomato) {
+				if(isTomato) { //regular tomato
 					tomatoFinished();
-				} else {
+				} else { //break time
 					timeDisplay.setText("Break is over!");
 					cancelTimer();
 				}
