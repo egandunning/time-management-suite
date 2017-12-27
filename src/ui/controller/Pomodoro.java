@@ -160,6 +160,7 @@ public class Pomodoro {
 		pomodoroCount++;
 		String content = taskCompletedField.getText();
 		content += LocalDateTime.now().format(DateTimeFormatter.ofPattern(", MM-dd-YYYY hh:mm"));
+		content += "\n";
 		finishedTomatoes.getChildren().add(0, new Text(content));
 		tomatoes.add(0, content);
 		Serializer.getInstance().write(tomatoes, "tomatoes");
