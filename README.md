@@ -6,3 +6,5 @@ Pomodoro technique: https://cirillocompany.de/pages/pomodoro-technique
 GTD (Getting Things Done): http://gettingthingsdone.com/
 
 And more...
+
+![Demo](resources/tms-demo.gif)
