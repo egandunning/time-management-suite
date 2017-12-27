@@ -160,8 +160,8 @@ public class Pomodoro {
 		pomodoroCount++;
 		String content = taskCompletedField.getText();
 		content += LocalDateTime.now().format(DateTimeFormatter.ofPattern(", MM-dd-YYYY hh:mm"));
-		finishedTomatoes.getChildren().add(new Text(content));
-		tomatoes.add(content);
+		finishedTomatoes.getChildren().add(0, new Text(content));
+		tomatoes.add(0, content);
 		Serializer.getInstance().write(tomatoes, "tomatoes");
 		//break time! 5 minutes, 20 minutes every 4th tomato
 		if(pomodoroCount % 4 == 0) {
