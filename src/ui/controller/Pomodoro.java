@@ -207,6 +207,11 @@ public class Pomodoro {
 				} else { //break time
 					timeDisplay.setText("Break is over!");
 					cancelTimer();
+					//play bell sound
+					//https://commons.wikimedia.org/wiki/File:Ladenklingel.ogg
+					new AudioClip(getClass().getClassLoader()
+							.getResource("Ladenklingel.mp3")
+							.toString()).play();
 				}
 				break;
 			case 1:
