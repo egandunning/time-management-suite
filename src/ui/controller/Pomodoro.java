@@ -146,15 +146,19 @@ public class Pomodoro {
     */
    private void tomatoFinished() {
       timeDisplay.setText("Completed!");
-      // run these on the JavaFX main thread to avoid exception.
+      
+      taskCompletedField.setEditable(true);
+      taskCompletedButton.setDisable(false);
+      // run this on the JavaFX main thread to avoid exception.
       Platform.runLater(() -> {
-         taskCompletedField.setEditable(true);
          taskCompletedField.setPromptText("What did you accomplish?");
-         taskCompletedButton.setDisable(false);
       });
+      
       // play bell sound
       // https://commons.wikimedia.org/wiki/File:Ladenklingel.ogg
-      new AudioClip(getClass().getClassLoader().getResource("Ladenklingel.mp3").toString()).play();
+      new AudioClip(getClass().getClassLoader()
+            .getResource("Ladenklingel.mp3").toString())
+            .play(volumeSelect.getValue());
       cancelTimer();
    }
 
