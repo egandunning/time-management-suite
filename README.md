@@ -18,4 +18,4 @@ And more...
   * Export runnable jar from IDE, put the jar and start.bat (located in /scripts)
    in the same directory, open the .bat file.
 
-![Startup](resources/tms-demo.gif)
+![Startup](resources/startup.gif)
