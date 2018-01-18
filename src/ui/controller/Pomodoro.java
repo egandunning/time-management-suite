@@ -183,7 +183,7 @@ public class Pomodoro {
          tomatoTime = 5;
       }
       String s = (tomatoTime > 1) ? "s" : "";
-      timeDisplay.setText(tomatoTime + " minute" + s + " left");
+      timeDisplay.setText(tomatoTime + " minute" + s + " break left");
       cancelTimer();
 
       taskCompletedField.setEditable(false);
@@ -227,10 +227,10 @@ public class Pomodoro {
             }
             break;
          case 1:
-            timeDisplay.setText(tomatoTime + " minute left");
+            timeDisplay.setText(tomatoTime + " minute" + (isTomato?" ":" break ") + "left");
             break;
          default:
-            timeDisplay.setText(tomatoTime + " minutes left");
+            timeDisplay.setText(tomatoTime + " minutes" + (isTomato?" ":" break ") + "left");
          }
       }
    }
