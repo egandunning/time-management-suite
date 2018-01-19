@@ -25,7 +25,7 @@ import javafx.scene.text.Text;
 
 public class Pomodoro {
 
-   private static final int ONE_MINUTE = 600;
+   private static final int ONE_MINUTE = 60000;
 
    @FXML
    private Button squash;
