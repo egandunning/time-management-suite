@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -24,7 +25,7 @@ import javafx.scene.text.Text;
 
 public class Pomodoro {
 
-   private static final int ONE_MINUTE = 60000;
+   private static final int ONE_MINUTE = 600;
 
    @FXML
    private Button squash;
@@ -51,6 +52,11 @@ public class Pomodoro {
    private int tomatoTime;
    private int pomodoroCount = 0;
    private ArrayList<String> tomatoes;
+   
+   private static final Image TOMATO_IMAGE = new Image(new Pomodoro().getClass().getClassLoader()
+         .getResource("tomato.png").toString());
+   private static final Image TOMATO_BREAK_IMAGE = new Image(new Pomodoro().getClass().getClassLoader()
+         .getResource("tomatobreak.png").toString());
 
    @SuppressWarnings("unchecked")
    @FXML
@@ -183,7 +189,8 @@ public class Pomodoro {
          tomatoTime = 5;
       }
       String s = (tomatoTime > 1) ? "s" : "";
-      timeDisplay.setText(tomatoTime + " minute" + s + " break left");
+      
+      timeDisplay.setText(tomatoTime + " minute" + s + " left");
       cancelTimer();
 
       taskCompletedField.setEditable(false);
@@ -205,10 +212,12 @@ public class Pomodoro {
       private boolean isTomato = true;
 
       public TomatoTimerTask() {
+         tomato.setImage(TOMATO_IMAGE);
       }
 
       public TomatoTimerTask(boolean isTomato) {
          this.isTomato = isTomato;
+         tomato.setImage((isTomato ? TOMATO_IMAGE : TOMATO_BREAK_IMAGE));
       }
 
       @Override
@@ -227,10 +236,10 @@ public class Pomodoro {
             }
             break;
          case 1:
-            timeDisplay.setText(tomatoTime + " minute" + (isTomato?" ":" break ") + "left");
+            timeDisplay.setText(tomatoTime + " minute left");
             break;
          default:
-            timeDisplay.setText(tomatoTime + " minutes" + (isTomato?" ":" break ") + "left");
+            timeDisplay.setText(tomatoTime + " minutes left");
          }
       }
    }
