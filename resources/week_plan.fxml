@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.*?>
+
+
+<GridPane minWidth="10000" fx:controller="ui.controller.WeekPlan" xmlns:fx="http://javafx.com/fxml/1">
+  <TextFlow>
+    <Text>Inspired by Laura Vanderkam's book, 168 hours. There are 168 hours in
+    a week, put them to good use! (Work in progress)</Text>
+  </TextFlow>
+</GridPane>

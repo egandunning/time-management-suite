@@ -20,6 +20,10 @@
         <Tab text="Pomodoro">
           <fx:include source="pomodoro.fxml"/>
         </Tab>
+        
+        <Tab text="Week Planner">
+          <fx:include source="week_plan.fxml"/>
+        </Tab>
 		
 	</TabPane>
 </AnchorPane>
