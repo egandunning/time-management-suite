@@ -24,174 +24,174 @@ import util.ListItemElement;
  */
 public class Serializer {
 
-    private static Serializer instance = null;
-    private static final String ROOT_DIR = "data";
+	private static Serializer instance = null;
+	private static final String ROOT_DIR = "data";
 
-    private Serializer() {
-    }
-
-    /**
-     * Get the instance of the Serializer object.
-     * 
-     * @return a Serializer.
-     */
-    public static Serializer getInstance() {
-
-	if (instance == null) {
-	    instance = new Serializer();
-	}
-	return instance;
-    }
-
-    public boolean writeNodeList(ObservableList<Node> textList, String filename) {
-
-	ArrayList<String> list = new ArrayList<>(textList.size());
-	for (Node t : textList) {
-	    list.add(((Text) t).getText());
+	private Serializer() {
 	}
 
-	return write(list, filename);
-    }
+	/**
+	 * Get the instance of the Serializer object.
+	 * 
+	 * @return a Serializer.
+	 */
+	public static Serializer getInstance() {
 
-    @SuppressWarnings("unchecked")
-    public ObservableList<Node> readNodeList(String filename) {
-
-	ArrayList<String> list = (ArrayList<String>) read(filename);
-
-	if (list == null) {
-	    return null;
+		if (instance == null) {
+			instance = new Serializer();
+		}
+		return instance;
 	}
 
-	ObservableList<Node> textList = new VBox().getChildren();
+	public boolean writeNodeList(ObservableList<Node> textList, String filename) {
 
-	for (String t : list) {
-	    textList.add(new Text(t));
-	}
-	return textList;
-    }
+		ArrayList<String> list = new ArrayList<>(textList.size());
+		for (Node t : textList) {
+			list.add(((Text) t).getText());
+		}
 
-    /**
-     * Writes an object to specified file. If overwrite parameter is true, any
-     * existing file with the same filename is overwritten. Files are saved in a
-     * directory called data.
-     * 
-     * @param obj
-     *            The object to write to file.
-     * @param filename
-     *            the filename to write the object to.
-     * @param overwrite
-     *            a flag to determine if an existing file should be overwritten.
-     *            True causes existing files to be overwritten.
-     * @return true if the object was written to file.
-     */
-    public boolean write(Serializable obj, String filename, boolean overwrite) {
-
-	System.out.println("Object to write: " + obj.toString());
-
-	File f = new File(ROOT_DIR + "\\" + filename + ".txt");
-
-	// if overwrite flag is false and the file exists, return false
-	if (!overwrite && f.exists()) {
-	    return false;
+		return write(list, filename);
 	}
 
-	// write object to file
-	try (FileOutputStream fout = new FileOutputStream(f); ObjectOutputStream oout = new ObjectOutputStream(fout)) {
+	@SuppressWarnings("unchecked")
+	public ObservableList<Node> readNodeList(String filename) {
 
-	    f.createNewFile();
-	    oout.writeObject(obj);
-	    return true;
+		ArrayList<String> list = (ArrayList<String>) read(filename);
 
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-	return false;
-    }
+		if (list == null) {
+			return null;
+		}
 
-    /**
-     * Writes an object to specified file. Any existing file with the same filename
-     * is overwritten. Files are saved in a directory called data.
-     * 
-     * @param obj
-     *            The object to write to file.
-     * @param filename
-     *            the filename to write the object to.
-     * @return true if the object was written to file
-     */
-    public boolean write(Serializable obj, String filename) {
-	return write(obj, filename, true);
-    }
+		ObservableList<Node> textList = new VBox().getChildren();
 
-    /**
-     * Read an object from a file.
-     * 
-     * @param filename
-     *            the file to read.
-     * @return the deserialized object stored in the file, null on failure.
-     */
-    public Serializable read(String filename) {
-
-	File f = new File(ROOT_DIR + "\\" + filename + ".txt");
-
-	// read object from file
-	try (FileInputStream fin = new FileInputStream(f); ObjectInputStream oin = new ObjectInputStream(fin)) {
-
-	    Serializable temp = (Serializable) oin.readObject();
-	    System.out.println("Object read: " + temp);
-	    return temp;
-
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	return null;
-    }
-
-    /**
-     * Write a list of GTDText objects to disk.
-     * 
-     * @param list
-     *            the list of GTDText objects.
-     * @param filename
-     *            the location to store the list.
-     * @return true if operation was successful.
-     */
-    public boolean writeGTDList(ArrayList<GTDText> list, String filename) {
-
-	if (list == null) {
-	    return false;
+		for (String t : list) {
+			textList.add(new Text(t));
+		}
+		return textList;
 	}
 
-	ArrayList<GTDListItem> beans = new ArrayList<>(list.size());
+	/**
+	 * Writes an object to specified file. If overwrite parameter is true, any
+	 * existing file with the same filename is overwritten. Files are saved in a
+	 * directory called data.
+	 * 
+	 * @param obj
+	 *            The object to write to file.
+	 * @param filename
+	 *            the filename to write the object to.
+	 * @param overwrite
+	 *            a flag to determine if an existing file should be overwritten.
+	 *            True causes existing files to be overwritten.
+	 * @return true if the object was written to file.
+	 */
+	public boolean write(Serializable obj, String filename, boolean overwrite) {
 
-	for (GTDText node : list) {
-	    beans.add(node.getItem());
+		System.out.println("Object to write: " + obj.toString());
+
+		File f = new File(ROOT_DIR + "\\" + filename + ".txt");
+
+		// if overwrite flag is false and the file exists, return false
+		if (!overwrite && f.exists()) {
+			return false;
+		}
+
+		// write object to file
+		try (FileOutputStream fout = new FileOutputStream(f); ObjectOutputStream oout = new ObjectOutputStream(fout)) {
+
+			f.createNewFile();
+			oout.writeObject(obj);
+			return true;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
-	return write(beans, filename);
-    }
-
-    /**
-     * Read list of GTDListItems that were written to file using writeGTDList.
-     * 
-     * @param filename
-     *            The file to read from.
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public ArrayList<GTDText> readGTDList(String filename) {
-
-	Serializable obj = read(filename);
-	if (obj == null) {
-	    return null;
-	}
-	ArrayList<GTDListItem> beans = (ArrayList<GTDListItem>) obj;
-
-	ArrayList<GTDText> nodes = new ArrayList<>(beans.size());
-
-	for (GTDListItem bean : beans) {
-	    nodes.add(ListItemElement.generate(bean));
+	/**
+	 * Writes an object to specified file. Any existing file with the same filename
+	 * is overwritten. Files are saved in a directory called data.
+	 * 
+	 * @param obj
+	 *            The object to write to file.
+	 * @param filename
+	 *            the filename to write the object to.
+	 * @return true if the object was written to file
+	 */
+	public boolean write(Serializable obj, String filename) {
+		return write(obj, filename, true);
 	}
 
-	return nodes;
-    }
+	/**
+	 * Read an object from a file.
+	 * 
+	 * @param filename
+	 *            the file to read.
+	 * @return the deserialized object stored in the file, null on failure.
+	 */
+	public Serializable read(String filename) {
+
+		File f = new File(ROOT_DIR + "\\" + filename + ".txt");
+
+		// read object from file
+		try (FileInputStream fin = new FileInputStream(f); ObjectInputStream oin = new ObjectInputStream(fin)) {
+
+			Serializable temp = (Serializable) oin.readObject();
+			System.out.println("Object read: " + temp);
+			return temp;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Write a list of GTDText objects to disk.
+	 * 
+	 * @param list
+	 *            the list of GTDText objects.
+	 * @param filename
+	 *            the location to store the list.
+	 * @return true if operation was successful.
+	 */
+	public boolean writeGTDList(ArrayList<GTDText> list, String filename) {
+
+		if (list == null) {
+			return false;
+		}
+
+		ArrayList<GTDListItem> beans = new ArrayList<>(list.size());
+
+		for (GTDText node : list) {
+			beans.add(node.getItem());
+		}
+
+		return write(beans, filename);
+	}
+
+	/**
+	 * Read list of GTDListItems that were written to file using writeGTDList.
+	 * 
+	 * @param filename
+	 *            The file to read from.
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<GTDText> readGTDList(String filename) {
+
+		Serializable obj = read(filename);
+		if (obj == null) {
+			return null;
+		}
+		ArrayList<GTDListItem> beans = (ArrayList<GTDListItem>) obj;
+
+		ArrayList<GTDText> nodes = new ArrayList<>(beans.size());
+
+		for (GTDListItem bean : beans) {
+			nodes.add(ListItemElement.generate(bean));
+		}
+
+		return nodes;
+	}
 }
