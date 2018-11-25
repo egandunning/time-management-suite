@@ -127,7 +127,7 @@ public class Serializer {
      * 
      * @param filename
      *            the file to read.
-     * @return the deserialized object stored in the file.
+     * @return the deserialized object stored in the file, null on failure.
      */
     public Serializable read(String filename) {
 

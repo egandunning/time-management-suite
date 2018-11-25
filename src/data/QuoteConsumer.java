@@ -3,10 +3,13 @@ package data;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 
+import data.persistence.Serializer;
 import models.Quote;
 
 /**
@@ -56,6 +59,18 @@ public class QuoteConsumer {
      * @return Quote object received from API. Returns null if status is not 200.
      */
     public Quote getQuoteOfTheDay() throws IOException {
+	
+	try {
+    	Quote cachedQuote = getCachedQuote();
+    	
+    	if(cachedQuote != null) {
+    	    return cachedQuote;
+    	}
+	}
+    catch(Exception e) {
+    	System.out.println("No cached quotes");
+    }
+	
 	int status = conn.getResponseCode();
 
 	if (status != 200) {
@@ -91,6 +106,34 @@ public class QuoteConsumer {
 		flag++;
 	    }
 	}
+	
+	quote.setRetrieveTime(LocalDate.now());
+	
+	Serializer s = Serializer.getInstance();
+	s.write(quote, "quote", true);
+	
 	return quote;
+    }
+    
+    /**
+     * Returns the cached quote. If the quote on disk is not from today, or
+     * doesn't exist, return null.
+     * @return A Quote object, or null if quote is stale.
+     */
+    public Quote getCachedQuote() {
+	
+	Quote cachedQuote;
+	
+	Serializer s = Serializer.getInstance();
+	Serializable obj = s.read("quote");
+	if(obj != null && obj instanceof Quote) {
+	    cachedQuote = (Quote)obj;
+	    LocalDate fetchDate = cachedQuote.getRetrieveTime();
+	    if(fetchDate.equals(LocalDate.now())) {
+		System.out.println("using cached quote");
+		return cachedQuote;
+	    }
+	}
+	return null;
     }
 }
